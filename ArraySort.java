@@ -1,18 +1,18 @@
 import java.util.*;
 public class ArraySort {
 	
-public static int choice, array[], lowest;
+public static int choice, array[], lowest, linearcount, binarycount;
 public static boolean done = false, found = false;
 public static Scanner scan = new Scanner(System.in);
 	public static void main(String[] args) {
 		while(!done) {
-		System.out.println("\nOPTION\t\t\tNUMBER");
-		System.out.println("-------------------------------");
-		System.out.println("Create An Array\t\t1");
-		System.out.println("Sort The Array\t\t2");
-		System.out.println("Print The Array\t\t3");
-		System.out.println("Search The Array\t4");
-		System.out.println("Exit\t\t\t0");
+		System.out.println("\nOPTION\t\t\t\tNUMBER");
+		System.out.println("--------------------------------------");
+		System.out.println("Create An Array\t\t\t1");
+		System.out.println("Sort The Array\t\t\t2");
+		System.out.println("Print The Array\t\t\t3");
+		System.out.println("Search The Array (Linear)\t4");
+		System.out.println("Exit\t\t\t\t0");
 		choice = scan.nextInt();
 		
 		switch(choice) {
@@ -78,10 +78,12 @@ public static Scanner scan = new Scanner(System.in);
 		System.out.println("What value do you want to search for?");
 		int a = scan.nextInt();
 		for (int i = 0; i < array.length; i++) {
+			linearcount++;
 			if (a == array[i]) {
 				System.out.println("Your value, " + (a + 1) + ", was found at position: " + i + " out of " + array.length);
+				System.out.println("Total searches = " + linearcount);
 				found = true;
-			} else if (a < array[i] && found == false) {
+			} else if (a < array[i] && found == false && i == array.length - 1) {
 				System.out.println("The given value is not present in the array.");
 			}//end of if given value is found or not
 		}//end of for-loop to search for given value
