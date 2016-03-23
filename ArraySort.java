@@ -1,8 +1,25 @@
+/* Program: ArraySort.java
+ * 
+ * Programmer: "Trapmaster" Pat Wooden
+ * 
+ * Description: Can create an array of a given number of integers. Also can sort the array from least to
+ * greatest, give the results printed, and search for a given value linearly.
+ * 
+ * Revision 0: Program state as first pushed.
+ * Revision 1: Fixed a loop that results when searching for a value that is not present in
+ * the array.
+ * Revision 2: Added a searchArrayBinary() method -- needs work to be fully functional.
+ * Revision 3: Fixed an infinite loop that resulted when the given value for searchArrayBinary() was greater than the middle
+ * value of the array.
+ * Revision 4: Fixed an arrayIndexOutOfBounds error that resulted when the given value of searchArrayBinary() is lower than the
+ * middle value of the array.
+ */
+
 import java.util.*;
 public class ArraySort {
 	
-public static int choice, array[], lowest, linearcount, binarycount;
-public static boolean done = false, found = false;
+public static int choice, array[], lowest, linearcount = 0, binarycount = 0;
+public static boolean done = false, found = false, finished = false;
 public static Scanner scan = new Scanner(System.in);
 	public static void main(String[] args) {
 		while(!done) {
@@ -12,6 +29,7 @@ public static Scanner scan = new Scanner(System.in);
 		System.out.println("Sort The Array\t\t\t2");
 		System.out.println("Print The Array\t\t\t3");
 		System.out.println("Search The Array (Linear)\t4");
+		System.out.println("Search The Array (Binary)\t5");
 		System.out.println("Exit\t\t\t\t0");
 		choice = scan.nextInt();
 		
@@ -29,6 +47,9 @@ public static Scanner scan = new Scanner(System.in);
 				sortArray(array);
 				searchArray();;
 				break;
+			case 5:
+				sortArray(array);
+				searchArrayBinary();
 			case 0:
 				done = true;
 				break;
@@ -88,6 +109,34 @@ public static Scanner scan = new Scanner(System.in);
 			}//end of if given value is found or not
 		}//end of for-loop to search for given value
 	}//end of searchArray
+	
+	public static void searchArrayBinary() {
+		System.out.println("What value do you want to search for?");
+		int value = scan.nextInt();
+		int lower = 0;
+		int middle = array.length / 2;
+		int upper = array.length;
+		while(!finished) {
+			if (value > array[middle]) {
+				lower = middle + 1;
+				middle = upper - ((upper - middle) / 2);
+				binarycount++;
+				// System.out.println("Debug statement = value > array[middle]");
+			} else if (value < array[middle]) {
+				upper = middle - 1;
+				middle = (middle - 1) / 2;
+				binarycount++;
+				// System.out.println("Debug statement = value < array[middle]");
+			} else if (value == array[middle]) {
+				System.out.println("Value " + value + " was found at " + middle + " out of " + array.length);
+				System.out.println("Actions taken: " + binarycount);
+				finished = true;
+			}//end of if-else statements to find value
+		if (lower == middle && middle == upper) {
+			System.out.println("Given value was not found in the array");
+		}//end of if value is never found
+	}//end of while-loop finished
+	}//end of searchArrayBinary
 }//end of ArraySort
 
 
