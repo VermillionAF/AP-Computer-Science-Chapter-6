@@ -13,6 +13,8 @@
  * value of the array.
  * Revision 4: Fixed an arrayIndexOutOfBounds error that resulted when the given value of searchArrayBinary() is lower than the
  * middle value of the array.
+ * Revision 5: Fixed the algorithm used by searchArrayBinary() to be an actual binary search, and not just hacking away pieces
+ * of the array until something happens (whoops :P).
  */
 
 import java.util.*;
@@ -50,6 +52,7 @@ public static Scanner scan = new Scanner(System.in);
 			case 5:
 				sortArray(array);
 				searchArrayBinary();
+				break;
 			case 0:
 				done = true;
 				break;
@@ -57,6 +60,7 @@ public static Scanner scan = new Scanner(System.in);
 				System.out.println("Please choose a valid selection.");
 				
 		}//end of switch-case choice
+		
 		}// end of while-loop done
 	}// end of main
 	public static void makeArray() {
@@ -106,8 +110,10 @@ public static Scanner scan = new Scanner(System.in);
 				found = true;
 			} else if (a < array[i] && found == false && i == array.length - 1) {
 				System.out.println("The given value is not present in the array.");
+				System.out.println("Total searches = " + linearcount);
 			}//end of if given value is found or not
 		}//end of for-loop to search for given value
+		done = false;
 	}//end of searchArray
 	
 	public static void searchArrayBinary() {
@@ -115,27 +121,27 @@ public static Scanner scan = new Scanner(System.in);
 		int value = scan.nextInt();
 		int lower = 0;
 		int middle = array.length / 2;
-		int upper = array.length;
-		while(!finished) {
-			if (value > array[middle]) {
-				lower = middle + 1;
-				middle = upper - ((upper - middle) / 2);
-				binarycount++;
-				// System.out.println("Debug statement = value > array[middle]");
-			} else if (value < array[middle]) {
+		int upper = array.length - 1;
+		while(lower <= upper) {
+			middle = lower + (upper - lower) / 2;
+			if (value < array[middle]) {
 				upper = middle - 1;
-				middle = (middle - 1) / 2;
 				binarycount++;
-				// System.out.println("Debug statement = value < array[middle]");
-			} else if (value == array[middle]) {
-				System.out.println("Value " + value + " was found at " + middle + " out of " + array.length);
-				System.out.println("Actions taken: " + binarycount);
+			} else if (value > array[middle]) {
+				lower = middle + 1;
+				binarycount++;
+			} else {
+				System.out.println("Value " + value + " was found at " + middle);
+				System.out.println("Search attempts: " + binarycount);
 				finished = true;
-			}//end of if-else statements to find value
-		if (lower == middle && middle == upper) {
-			System.out.println("Given value was not found in the array");
+			}//end of if-else comparison of array[middle] and value
+		}//end of while-loop lower <= upper
+		if (finished == false) {
+			System.out.println("The value was not found in the array.");
+			System.out.println("Search attempts: " + binarycount);
 		}//end of if value is never found
-	}//end of while-loop finished
+			done = false;
+			finished = false;
 	}//end of searchArrayBinary
 }//end of ArraySort
 
